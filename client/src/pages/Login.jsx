@@ -84,14 +84,7 @@ export default function Login() {
             </p>
           </div>
 
-          {/* Demo credentials */}
-          <div className="mt-4 p-3 rounded-xl bg-surface-hover border border-surface-border">
-            <p className="text-xs text-gray-500 font-medium mb-2">Demo credentials</p>
-            <div className="space-y-1 text-xs text-gray-400">
-              <p>Admin: <code className="text-brand-400">admin@college.edu</code> / <code className="text-brand-400">admin123</code></p>
-              <p>Student: <code className="text-brand-400">student@college.edu</code> / <code className="text-brand-400">student123</code></p>
-            </div>
-          </div>
+        
         </div>
       </div>
     </div>
