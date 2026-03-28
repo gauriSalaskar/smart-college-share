@@ -48,7 +48,7 @@ exports.createListing = async (req, res) => {
   try {
     const { title, description, category, type, price, priceUnit, condition, location, contactPreference, tags } = req.body;
     const images = req.files ? req.files.map(f => ({
-      url: `/uploads/${f.filename}`,
+      url: f.path,
       publicId: f.filename,
     })) : [];
 
@@ -80,7 +80,7 @@ exports.updateListing = async (req, res) => {
 
     const updates = { ...req.body };
     if (req.files && req.files.length > 0) {
-      updates.images = req.files.map(f => ({ url: `/uploads/${f.filename}`, publicId: f.filename }));
+      updates.images = req.files.map(f => ({ url: f.path, publicId: f.filename }));
     }
     if (updates.tags && typeof updates.tags === 'string') {
       updates.tags = updates.tags.split(',').map(t => t.trim());
