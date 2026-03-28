@@ -1,3 +1,4 @@
+
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
@@ -23,20 +24,8 @@ export default function Signup() {
       navigate('/');
     } catch (err) {
       toast.error(err.response?.data?.message || err.response?.data?.errors?.[0]?.msg || 'Signup failed');
-    } finally {
-      setLoading(false);
-    }
+    } finally { setLoading(false); }
   };
-
-  const Field = ({ icon: Icon, name, type = 'text', placeholder, required }) => (
-    <div className="relative">
-      <Icon className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500" />
-      <input
-        type={type} name={name} value={form[name]} onChange={handleChange}
-        placeholder={placeholder} required={required} className="input pl-11"
-      />
-    </div>
-  );
 
   return (
     <div className="min-h-[calc(100vh-64px)] flex items-center justify-center px-4 py-12 grid-bg">
@@ -53,19 +42,48 @@ export default function Signup() {
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
               <label className="label">Full Name *</label>
-              <Field icon={RiUserLine} name="name" placeholder="Your full name" required />
+              <div className="relative">
+                <RiUserLine className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500" />
+                <input
+                  type="text"
+                  name="name"
+                  value={form.name}
+                  onChange={handleChange}
+                  placeholder="Your full name"
+                  required
+                  className="input pl-11"
+                />
+              </div>
             </div>
+
             <div>
               <label className="label">College Email *</label>
-              <Field icon={RiMailLine} name="email" type="email" placeholder="you@college.edu" required />
+              <div className="relative">
+                <RiMailLine className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500" />
+                <input
+                  type="email"
+                  name="email"
+                  value={form.email}
+                  onChange={handleChange}
+                  placeholder="you@college.edu"
+                  required
+                  className="input pl-11"
+                />
+              </div>
             </div>
+
             <div>
               <label className="label">Password *</label>
               <div className="relative">
                 <RiLockLine className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500" />
                 <input
-                  type={showPwd ? 'text' : 'password'} name="password" value={form.password}
-                  onChange={handleChange} placeholder="Min. 6 characters" required className="input pl-11 pr-11"
+                  type={showPwd ? 'text' : 'password'}
+                  name="password"
+                  value={form.password}
+                  onChange={handleChange}
+                  placeholder="Min. 6 characters"
+                  required
+                  className="input pl-11 pr-11"
                 />
                 <button type="button" onClick={() => setShowPwd(!showPwd)}
                   className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-300">
@@ -73,13 +91,35 @@ export default function Signup() {
                 </button>
               </div>
             </div>
+
             <div>
               <label className="label">Phone Number</label>
-              <Field icon={RiPhoneLine} name="phone" type="tel" placeholder="+91 9876543210" />
+              <div className="relative">
+                <RiPhoneLine className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500" />
+                <input
+                  type="tel"
+                  name="phone"
+                  value={form.phone}
+                  onChange={handleChange}
+                  placeholder="+91 9876543210"
+                  className="input pl-11"
+                />
+              </div>
             </div>
+
             <div>
               <label className="label">College / University</label>
-              <Field icon={RiBuilding2Line} name="college" placeholder="Your college name" />
+              <div className="relative">
+                <RiBuilding2Line className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500" />
+                <input
+                  type="text"
+                  name="college"
+                  value={form.college}
+                  onChange={handleChange}
+                  placeholder="Your college name"
+                  className="input pl-11"
+                />
+              </div>
             </div>
 
             <button type="submit" disabled={loading}
