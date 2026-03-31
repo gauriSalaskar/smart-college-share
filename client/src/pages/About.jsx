@@ -43,17 +43,7 @@ export default function About() {
         </div>
       </div>
 
-      {/* Stats */}
-      <div className="border-b border-surface-border bg-surface-card/50">
-        <div className="max-w-5xl mx-auto px-4 py-8 grid grid-cols-2 md:grid-cols-4 gap-6">
-          {STATS.map(stat => (
-            <div key={stat.label} className="text-center">
-              <p className="text-3xl font-bold text-brand-400 mb-1">{stat.value}</p>
-              <p className="text-gray-500 text-sm">{stat.label}</p>
-            </div>
-          ))}
-        </div>
-      </div>
+      
 
       <div className="max-w-5xl mx-auto px-4 py-16 space-y-16">
         {/* Mission */}
@@ -139,13 +129,21 @@ export default function About() {
         </div>
 
         {/* Built by */}
-        <div className="card p-8 text-center !hover:transform-none">
-          <h2 className="text-xl font-bold text-white mb-3">Built For Students, By a Student</h2>
-          <p className="text-gray-400 leading-relaxed max-w-2xl mx-auto mb-4">
-            CampusShare was developed as a mini project by <b className="text-white">Gauri Salaskar</b>, a Computer Engineering student, under the guidance of <b className="text-white">Prof. Vijila. G</b>. Built with React.js, Node.js, MongoDB, and deployed on Vercel + Render.
-          </p>
-          <p className="text-gray-600 text-sm">© 2025 CampusShare. All rights reserved.</p>
-        </div>
+
+<div className="card p-8 text-center !hover:transform-none">
+  <h2 className="text-xl font-bold text-white mb-3">
+    Built For Students, By a Student
+  </h2>
+
+  <p className="text-gray-400 leading-relaxed max-w-2xl mx-auto mb-4">
+    CampusShare was developed as a mini project. Built with React.js, Node.js, MongoDB, and deployed on Vercel + Render.
+  </p>
+
+  <p className="text-gray-600 text-sm">
+    © 2025 CampusShare. All rights reserved.
+  </p>
+</div>
+        
 
         {/* CTA */}
         <div className="text-center">
