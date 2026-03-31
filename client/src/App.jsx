@@ -16,6 +16,8 @@ import About from './pages/About';
 import Terms from './pages/Terms';
 import Privacy from './pages/privacy';
 import Footer from './components/Footer';
+import PaymentSuccess from './pages/PaymentSuccess';
+
 
 const PrivateRoute = ({ children }) => {
   const { user, loading } = useAuth();
@@ -53,6 +55,7 @@ function AppRoutes() {
         <Route path="/about" element={<About />} />
        <Route path="/terms" element={<Terms />} />
       <Route path="/privacy" element={<Privacy />} />
+      <Route path="/payment-success" element={<PrivateRoute><PaymentSuccess /></PrivateRoute>} />
 <Route path="/admin" element={<AdminRoute><AdminDashboard /></AdminRoute>} />
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>

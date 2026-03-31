@@ -3,11 +3,12 @@ import { useParams, Link, useNavigate } from 'react-router-dom';
 import API from '../utils/api';
 import { useAuth } from '../context/AuthContext';
 import toast from 'react-hot-toast';
+import { load } from '@cashfreepayments/cashfree-js'; // ✅ NEW
 import {
   RiHeartLine, RiHeartFill, RiBookmarkLine, RiBookmarkFill,
   RiEditLine, RiDeleteBinLine, RiMapPinLine, RiPhoneLine,
   RiMailLine, RiCalendarLine, RiEyeLine, RiArrowLeftLine,
-  RiMessage2Line, RiStarLine
+  RiMessage2Line, RiStarLine, RiShoppingCartLine // ✅ NEW icon
 } from 'react-icons/ri';
 
 const CONDITION_COLOR = { New: 'text-green-400', 'Like New': 'text-emerald-400', Good: 'text-blue-400', Fair: 'text-yellow-400', Poor: 'text-red-400' };
@@ -25,6 +26,7 @@ export default function ListingDetail() {
   const [msgModal, setMsgModal] = useState(false);
   const [msgContent, setMsgContent] = useState('');
   const [msgLoading, setMsgLoading] = useState(false);
+  const [payLoading, setPayLoading] = useState(false); // ✅ NEW
 
   useEffect(() => {
     API.get(`/listings/${id}`)
@@ -75,6 +77,38 @@ export default function ListingDetail() {
     } catch (err) {
       toast.error(err.response?.data?.message || 'Failed to send message');
     } finally { setMsgLoading(false); }
+  };
+
+  // ✅ NEW — Buy Now handler
+  const handleBuyNow = async () => {
+    if (!user) { toast.error('Please log in'); return; }
+    setPayLoading(true);
+    try {
+      // Step 1: Create order on backend
+      const { data } = await API.post('/cashfree/create-order', { listingId: id });
+
+      if (!data.success) {
+        toast.error(data.message || 'Failed to create order');
+        return;
+      }
+
+      // Step 2: Save listingId so PaymentSuccess page can verify
+      localStorage.setItem('pendingListingId', id);
+
+      // Step 3: Load Cashfree SDK and open payment
+      const cashfree = await load({ mode: 'sandbox' });
+
+      cashfree.checkout({
+        paymentSessionId: data.paymentSessionId,
+        redirectTarget: '_self',
+      });
+
+    } catch (err) {
+      console.error(err);
+      toast.error(err.response?.data?.message || 'Payment failed');
+    } finally {
+      setPayLoading(false);
+    }
   };
 
   if (loading) return (
@@ -227,7 +261,28 @@ export default function ListingDetail() {
               </>
             ) : user ? (
               <>
-                <button onClick={() => setMsgModal(true)} className="btn-primary flex items-center gap-2 flex-1">
+                {/* ✅ NEW — Buy Now button (only for Sell/Rent type) */}
+                {(listing.type === 'Sell' || listing.type === 'Rent') && listing.status !== 'sold' && (
+                  <button
+                    onClick={handleBuyNow}
+                    disabled={payLoading}
+                    className="btn-primary flex items-center gap-2 flex-1 justify-center disabled:opacity-60"
+                  >
+                    {payLoading
+                      ? <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                      : <RiShoppingCartLine />
+                    }
+                    {payLoading ? 'Processing...' : `Buy Now ₹${listing.price?.toLocaleString()}`}
+                  </button>
+                )}
+
+                {listing.status === 'sold' && (
+                  <div className="flex-1 text-center py-2.5 rounded-xl bg-gray-500/10 text-gray-500 border border-gray-500/20 font-medium text-sm">
+                    Sold Out
+                  </div>
+                )}
+
+                <button onClick={() => setMsgModal(true)} className="btn-secondary flex items-center gap-2 flex-1">
                   <RiMessage2Line /> Contact Owner
                 </button>
                 <button onClick={handleLike} className={`flex items-center gap-2 px-4 py-2.5 rounded-xl border transition-all text-sm font-medium ${liked ? 'bg-red-500/10 border-red-500/30 text-red-400' : 'border-surface-border text-gray-400 hover:border-red-500/30 hover:text-red-400'}`}>
