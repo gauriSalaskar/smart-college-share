@@ -12,6 +12,10 @@ import Dashboard from './pages/Dashboard';
 import AdminDashboard from './pages/AdminDashboard';
 import Messages from './pages/Messages';
 import Bookmarks from './pages/Bookmarks';
+import About from './pages/About';
+import Terms from './pages/Terms';
+import Privacy from './pages/privacy';
+import Footer from './components/Footer';
 
 const PrivateRoute = ({ children }) => {
   const { user, loading } = useAuth();
@@ -46,9 +50,14 @@ function AppRoutes() {
         <Route path="/dashboard" element={<PrivateRoute><Dashboard /></PrivateRoute>} />
         <Route path="/messages" element={<PrivateRoute><Messages /></PrivateRoute>} />
         <Route path="/bookmarks" element={<PrivateRoute><Bookmarks /></PrivateRoute>} />
-        <Route path="/admin" element={<AdminRoute><AdminDashboard /></AdminRoute>} />
+        <Route path="/about" element={<About />} />
+       <Route path="/terms" element={<Terms />} />
+      <Route path="/privacy" element={<Privacy />} />
+<Route path="/admin" element={<AdminRoute><AdminDashboard /></AdminRoute>} />
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
+      <Footer />
+
       <Toaster
         position="top-right"
         toastOptions={{
