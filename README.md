@@ -286,9 +286,3 @@ Admin reviews in Admin Panel
 Admins' own listings are auto-approved.
 
 ---
-
-## 💡 Tips
-
-- To make yourself an admin: update role in MongoDB — `db.users.updateOne({email: "you@example.com"}, {$set: {role: "admin"}})`
-- Upload folder is at `server/uploads/` — you can delete files manually during development
-- The seed script is safe to re-run; it clears all data first
